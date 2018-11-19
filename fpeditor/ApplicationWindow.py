@@ -152,7 +152,6 @@ class ApplicationWindow(Gtk.ApplicationWindow):
         btn_undo.set_name('headerbar-btn')
         btn_undo.set_icon_name('edit-undo')
         btn_undo.set_property('tooltip-text', 'Undo')
-        #       btn_undo.connect('clicked', self.__undo_callback)
         btn_undo.set_sensitive(False)
         self.__btn_undo = btn_undo
 
@@ -161,7 +160,6 @@ class ApplicationWindow(Gtk.ApplicationWindow):
         btn_redo.set_name('headerbar-btn')
         btn_redo.set_icon_name('edit-redo')
         btn_redo.set_property('tooltip-text', 'Redo')
-        #btn_redo.connect('clicked', self.__editor.redo)
         btn_redo.set_sensitive(False)
         self.__btn_redo = btn_redo
 
