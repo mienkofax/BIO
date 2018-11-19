@@ -81,14 +81,14 @@ class ApplicationWindow(Gtk.ApplicationWindow):
         btn_open = Gtk.ToolButton()
         btn_open.set_name('headerbar-btn')
         btn_open.set_icon_name('document-open')
-        btn_open.set_property('tooltip-text', 'Open a file')
+        btn_open.set_property('tooltip-text', 'Open file')
         btn_open.connect('clicked', self.__open_file_callback)
 
         # close
         btn_close = Gtk.ToolButton()
         btn_close.set_name('headerbar-btn')
         btn_close.set_icon_name('window-close')
-        btn_close.set_property('tooltip-text', 'Close a file')
+        btn_close.set_property('tooltip-text', 'Close file')
         btn_close.connect('clicked', self.__close_file_callback)
         btn_close.set_sensitive(False)
         self.__btn_close = btn_close
@@ -97,7 +97,7 @@ class ApplicationWindow(Gtk.ApplicationWindow):
         btn_save = Gtk.ToolButton()
         btn_save.set_name('headerbar-btn')
         btn_save.set_icon_name('document-save')
-        btn_save.set_property('tooltip-text', 'Save a file')
+        btn_save.set_property('tooltip-text', 'Save file')
         btn_save.connect('clicked', self.__save_callback)
         btn_save.set_sensitive(False)
         self.__btn_save = btn_save
