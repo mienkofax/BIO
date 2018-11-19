@@ -95,7 +95,7 @@ def freq_img(im, W, angles):
     for i in range(1, x / W - 1):
         for j in range(1, y / W - 1):
             box = (i * W, j * W, min(i * W + W, x), min(j * W + W, y))
-            freq_img.paste(freqs[i][j] * 255.0 * 1.2, box)
+            freq_img.paste(int(freqs[i][j] * 255.0 * 1.2), box)
 
     return freq_img
 
