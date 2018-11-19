@@ -2,6 +2,8 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
+from fpeditor.CustomDialog import CustomDialog
+
 
 class DialogUtil:
     """Pomocna trieda pre pracu s dialogovimi oknami."""
@@ -92,3 +94,33 @@ class DialogUtil:
         dialog.destroy()
 
         return filename
+
+    @staticmethod
+    def dialog_with_param(parent, title, limit_min, limit_max):
+        def on_apply_clicked(_, scale, dialog):
+            dialog.values.append(int(scale.get_value()))
+            dialog.destroy()
+
+        dialog = CustomDialog(parent, title)
+
+        scale = Gtk.Scale.new_with_range(Gtk.Orientation.HORIZONTAL, limit_min, limit_max, 20)
+        scale.set_value((limit_min + limit_max) / 2)
+        scale.set_hexpand(True)
+        scale.set_valign(Gtk.Align.START)
+
+        btn_cancel = Gtk.Button.new_with_label('Cancel')
+        btn_cancel.connect('clicked', dialog.close)
+
+        btn_apply = Gtk.Button.new_with_label('Apply')
+        btn_apply.connect('clicked', on_apply_clicked, scale, dialog)
+        btn_apply.get_style_context().add_class(Gtk.STYLE_CLASS_SUGGESTED_ACTION)
+
+        btn_box = Gtk.Box(spacing=6)
+        btn_box.pack_start(btn_cancel, True, True, 0)
+        btn_box.pack_end(btn_apply, True, True, 0)
+
+        dialog.dialog_box.add(scale)
+        dialog.dialog_box.add(btn_box)
+        dialog.launch()
+
+        return dialog
