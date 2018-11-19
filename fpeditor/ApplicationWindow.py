@@ -325,7 +325,7 @@ class ApplicationWindow(Gtk.ApplicationWindow):
 
         self.show_all()
 
-    def __open_file_callback(self, btn):
+    def __open_file_callback(self, _):
         """Otvorenie noveho obrazka a jeho nacitanie po overeni zakladnych parametrov."""
 
         if self.__active_image_widget:
@@ -395,25 +395,25 @@ class ApplicationWindow(Gtk.ApplicationWindow):
         self.__zoom_level = ZoomUtil.compute_new_value(self.__zoom_level, zoom)
         self.__change_image_scale()
 
-    def __zoom_in_callback(self, btn):
+    def __zoom_in_callback(self, _):
         """Priblizenie o 10 %."""
 
         self.__zoom_level = ZoomUtil.compute_new_value(self.__zoom_level, 1)
         self.__change_image_scale()
 
-    def __zoom_original_callback(self, btn):
+    def __zoom_original_callback(self, _):
         """Nastavenie priblizenia na 100 %."""
 
         self.__zoom_level = 100
         self.__change_image_scale()
 
-    def __zoom_fit_best_callback(self, btn):
+    def __zoom_fit_best_callback(self, _):
         """Priblizenie, aby bol obrazok viditelny v celkom okne."""
 
         self.__zoom_level = self.__best_zoom_level()
         self.__change_image_scale()
 
-    def __zoom_out_callback(self, btn):
+    def __zoom_out_callback(self, _):
         """Oddialenie priblizenia o 10 %."""
 
         self.__zoom_level = ZoomUtil.compute_new_value(self.__zoom_level, -1)
@@ -453,7 +453,7 @@ class ApplicationWindow(Gtk.ApplicationWindow):
         dialog.run()
         dialog.destroy()
 
-    def __apply_rotate_action(self, btn, x, name):
+    def __apply_rotate_action(self, _, __, name):
         """Aplikovanie operacie no otocenie obrazka, pripadne zrkadlenie."""
 
         self.__editor.apply_filter(name)
