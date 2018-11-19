@@ -37,10 +37,11 @@ class ImgEditor:
 
         return self.__image.actual_index()
 
-    def apply_filter(self, name):
-        """Aplikovanie filtra na zobrazeny obrazok.
+    def apply_rotation(self, name):
+        """Aplikovanie rotacie na zobrazeny obrazok.
 
-        Kazdy filter je aplikovany samostatne a je mozne urobit krok spat po jeho aplikovani.
+        Kazda rotacia je aplikovatelna samostatne a je mozne urobit krok spat
+        po jej aplikovani.
         """
 
         img = self.__image.current_img()
@@ -54,7 +55,7 @@ class ImgEditor:
         elif name == 'vertical-mirror':
             img = RotationUtil.vertical_mirror(img)
         else:
-            raise NameError('unknown filter name: %s' % name)
+            raise NameError('unknown rotation name: %s' % name)
 
         self.do_change(img)
 

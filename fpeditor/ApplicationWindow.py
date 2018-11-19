@@ -474,7 +474,7 @@ class ApplicationWindow(Gtk.ApplicationWindow):
     def __apply_rotate_action(self, _, __, name):
         """Aplikovanie operacie no otocenie obrazka, pripadne zrkadlenie."""
 
-        self.__editor.apply_filter(name)
+        self.__editor.apply_rotation(name)
 
     def __load_logo(self):
         """Nacitanie loga do pixbufferu z adresara, kde sa spusta aplikacia."""
