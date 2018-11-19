@@ -97,7 +97,7 @@ class ImgEditor:
 
         suffix = path.splitext(filename)[-1][1:].lower()
         if suffix == 'wsq':
-            #wsq save
+            # wsq save
             pass
         else:
             img = self.__image.current_img()
