@@ -348,6 +348,7 @@ class ApplicationWindow(Gtk.ApplicationWindow):
         if suffix not in self.__supported_formats:
             DialogUtil.message(self, 'warning', 'Unknown format',
                                'File format: `%s` is not supported.' % suffix)
+            return
 
         if suffix == 'wsq':
             wsq.wsq_to_png(filename, self.__tmp_filename)
