@@ -1,0 +1,3 @@
+PyGObject
+pgi
+dbus-python
