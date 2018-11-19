@@ -5,6 +5,7 @@ from os import path
 from fpeditor.RotationUtil import RotationUtil
 from fpeditor.ImgObj import ImgObj
 from fpeditor.DialogUtil import DialogUtil
+from fpeditor.FiltersUtil import FiltersUtil
 
 
 class ImgEditor:
@@ -37,10 +38,11 @@ class ImgEditor:
 
         return self.__image.actual_index()
 
-    def apply_filter(self, name):
-        """Aplikovanie filtra na zobrazeny obrazok.
+    def apply_rotation(self, name):
+        """Aplikovanie rotacie na zobrazeny obrazok.
 
-        Kazdy filter je aplikovany samostatne a je mozne urobit krok spat po jeho aplikovani.
+        Kazda rotacia je aplikovatelna samostatne a je mozne urobit krok spat
+        po jej aplikovani.
         """
 
         img = self.__image.current_img()
@@ -53,6 +55,22 @@ class ImgEditor:
             img = RotationUtil.horizontal_mirror(img)
         elif name == 'vertical-mirror':
             img = RotationUtil.vertical_mirror(img)
+        else:
+            raise NameError('unknown rotation name: %s' % name)
+
+        self.do_change(img)
+
+        return img
+
+    def apply_filter(self, name, value=None):
+        """Aplikovanie pozadovaneho filtra."""
+
+        img = self.__image.current_img()
+
+        if name == 'black-white':
+            img = FiltersUtil.black_white(img, value)
+        elif name == 'grayscale':
+            img = FiltersUtil.grayscale(img)
         else:
             raise NameError('unknown filter name: %s' % name)
 

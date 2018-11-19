@@ -220,6 +220,23 @@ class ApplicationWindow(Gtk.ApplicationWindow):
         horizontal_mirror.connect('activate', self.__apply_rotate_action, 'horizontal-mirror')
         self.add_action(horizontal_mirror)
 
+        # sub menu for Filters
+        model_menu_sub_filters = Gio.Menu()
+        model_menu_sub_filters.append('Back & White', 'win.black-white')
+        model_menu_sub_filters.append('Grayscale', 'win.grayscale')
+        model_menu.append_submenu('Filters', model_menu_sub_filters)
+
+        # black & white
+        black_white = Gio.SimpleAction.new('black-white', None)
+        black_white.connect('activate', self.__apply_filter_dialog_action, 'black-white',
+                            ('Black & White', 0, 255))
+        self.add_action(black_white)
+
+        # grayscale
+        grayscale = Gio.SimpleAction.new('grayscale', None)
+        grayscale.connect('activate', self.__apply_filter_action, 'grayscale')
+        self.add_action(grayscale)
+
         # about
         model_menu.append('About', 'win.about')
         about_action = Gio.SimpleAction.new('about', None)
@@ -348,6 +365,7 @@ class ApplicationWindow(Gtk.ApplicationWindow):
         if suffix not in self.__supported_formats:
             DialogUtil.message(self, 'warning', 'Unknown format',
                                'File format: `%s` is not supported.' % suffix)
+            return
 
         if suffix == 'wsq':
             wsq.wsq_to_png(filename, self.__tmp_filename)
@@ -474,7 +492,20 @@ class ApplicationWindow(Gtk.ApplicationWindow):
     def __apply_rotate_action(self, _, __, name):
         """Aplikovanie operacie no otocenie obrazka, pripadne zrkadlenie."""
 
-        self.__editor.apply_filter(name)
+        self.__editor.apply_rotation(name)
+
+    def __apply_filter_dialog_action(self, _, __, name, params):
+        """Vytvorenie dialogoveho okna a nasledne aplikovanie filtra so zadanymi hodnotami."""
+
+        dialog = DialogUtil.dialog_with_param(self, *params)
+        values = dialog.get_values()
+
+        self.__editor.apply_filter(name, values)
+
+    def __apply_filter_action(self, _, __, name, params=None):
+        """Aplikovanie filtra so zadanymi parametrami."""
+
+        self.__editor.apply_filter(name, params)
 
     def __load_logo(self):
         """Nacitanie loga do pixbufferu z adresara, kde sa spusta aplikacia."""
