@@ -1,4 +1,5 @@
 import gi
+import wsq
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, Gio, GdkPixbuf, Gdk
 from os import path
@@ -29,6 +30,7 @@ class ApplicationWindow(Gtk.ApplicationWindow):
         self.__zoom_level = 100  # default zoom level after open image
         self.__width = 0
         self.__height = 0
+        self.__tmp_filename = '/tmp/wsq_to_png.png'
 
         Gtk.Window.__init__(self, title=self.__program_name, application=app)
         self.set_default_size(950, 550)
@@ -289,7 +291,7 @@ class ApplicationWindow(Gtk.ApplicationWindow):
         if self.__editor.actual_image_index() >= self.__editor.number_of_images() - 1:
             self.__btn_redo.set_sensitive(False)
 
-    def __load_image(self, img, filename):
+    def __load_image(self, img, filename, wsq_filename=None):
         """Nacitanie obrazku do pixbufferu a jeho zobrazenie vo widgete.
 
         Nacitany obrazok sa prevedie do pixbufferu, ulozia sa jeho rozmery. Ulozenie rozmerov
@@ -300,7 +302,8 @@ class ApplicationWindow(Gtk.ApplicationWindow):
         premennej.
         """
 
-        self.__editor = ImgEditor(self, img, filename)
+        self.__editor = ImgEditor(self, img, filename, wsq_filename)
+
         self.__btn_undo.connect('clicked', self.__undo_callback)
         self.__btn_redo.connect('clicked', self.__redo_callback)
         self.set_undo_redo_sensitive()
@@ -326,7 +329,11 @@ class ApplicationWindow(Gtk.ApplicationWindow):
         self.show_all()
 
     def __open_file_callback(self, _):
-        """Otvorenie noveho obrazka a jeho nacitanie po overeni zakladnych parametrov."""
+        """Otvorenie noveho obrazka a jeho nacitanie po overeni zakladnych parametrov.
+
+        Pri praci s wsq suborom sa tento subor najpr prevedie na png a nasledne sa este upravi
+        zo stupne sedej na RGB.
+        """
 
         if self.__active_image_widget:
             DialogUtil.message(self, 'warning', 'Any img is opened',
@@ -338,14 +345,25 @@ class ApplicationWindow(Gtk.ApplicationWindow):
             return
 
         suffix = path.splitext(filename)[-1][1:].lower()
-        if suffix == 'wsq' and suffix in self.__supported_formats:
-            raise NotImplementedError('load wsq image is not implemented')
-        elif suffix in self.__supported_formats:
-            img = Image.open(filename)
-            self.__load_image(img, filename)
-        else:
+        if suffix not in self.__supported_formats:
             DialogUtil.message(self, 'warning', 'Unknown format',
                                'File format: `%s` is not supported.' % suffix)
+
+        if suffix == 'wsq':
+            wsq.wsq_to_png(filename, self.__tmp_filename)
+
+            # convert gray to RGB
+            im = Image.open(self.__tmp_filename).convert('RGB')
+            im.save(self.__tmp_filename)
+            im.close()
+
+            img = Image.open(self.__tmp_filename)
+
+            self.__load_image(img, self.__tmp_filename, filename)
+            return
+
+        img = Image.open(filename)
+        self.__load_image(img, filename)
 
     def __close_file_callback(self, _):
         """Skrytie widgetu s obrazkom a deaktivovanie tlacidla na zatvorenie suboru.

@@ -1,3 +1,6 @@
+import wsq
+from PIL import Image
+
 from os import path
 from fpeditor.RotationUtil import RotationUtil
 from fpeditor.ImgObj import ImgObj
@@ -13,10 +16,11 @@ class ImgEditor:
     """
     MAX_HISTORY_ITEMS = 100
 
-    def __init__(self, win, img, filename):
+    def __init__(self, win, img, filename, wsq_filename):
         self.__win = win
         self.__image = ImgObj(img, filename)
         self.__filename = filename
+        self.__wsq_filename = wsq_filename
 
     def filename(self):
         """Cesta k aktualne otvorenemu obrazku."""
@@ -82,25 +86,42 @@ class ImgEditor:
                 self.__win.update_image(self.__image.current_img())
 
     def save(self):
-        """Ulozenie obrazku do povodneho suboru."""
+        """Ulozenie obrazku do povodneho suboru.
 
-        if path.isfile(self.__filename):
-            img = self.__image.current_img()
+        Pri ukladani wsq suboru sa najpr ulozi pouzivany subor do png, nasledne sa upravi
+        rezim s RGB do gray a potom sa prevedie naspat do wsq formatu.
+        """
+
+        img = self.__image.current_img()
+        if path.isfile(self.__filename) and self.__wsq_filename is None:
             img.save(self.__filename)
+
+        if self.__wsq_filename is not None:
+            img.save(self.__filename)
+            # convert RGB to gray
+            Image.open(self.__filename).convert('L').save(self.__filename)
+            wsq.png_to_wsq(self.__filename, self.__wsq_filename)
 
     def save_as(self):
         """Ulozenie obrazku do noveho suboru."""
 
-        filename = DialogUtil.save_as_dialog(self.__win, self.__filename)
+        if self.__wsq_filename is not None:
+            filename = DialogUtil.save_as_dialog(self.__win, self.__wsq_filename)
+        else:
+            filename = DialogUtil.save_as_dialog(self.__win, self.__filename)
         if filename is None:
             return
 
         suffix = path.splitext(filename)[-1][1:].lower()
+        img = self.__image.current_img()
+
         if suffix == 'wsq':
-            # wsq save
+            img.save(self.__filename)
+            # convert RGB to gray
+            Image.open(self.__filename).convert('L').save(self.__filename)
+            wsq.png_to_wsq(self.__filename, filename)
             pass
         else:
-            img = self.__image.current_img()
             img.save(filename)
             self.__filename = filename
 
