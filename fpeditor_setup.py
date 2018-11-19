@@ -3,7 +3,7 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, Gio, GdkPixbuf, Gdk
 import sys
 
-from fpeditor.Application import ApplicationWindow
+from fpeditor.ApplicationWindow import ApplicationWindow
 
 
 class Application(Gtk.Application):

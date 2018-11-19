@@ -81,14 +81,14 @@ class ApplicationWindow(Gtk.ApplicationWindow):
         btn_open = Gtk.ToolButton()
         btn_open.set_name('headerbar-btn')
         btn_open.set_icon_name('document-open')
-        btn_open.set_property('tooltip-text', 'Open a file')
+        btn_open.set_property('tooltip-text', 'Open file')
         btn_open.connect('clicked', self.__open_file_callback)
 
         # close
         btn_close = Gtk.ToolButton()
         btn_close.set_name('headerbar-btn')
         btn_close.set_icon_name('window-close')
-        btn_close.set_property('tooltip-text', 'Close a file')
+        btn_close.set_property('tooltip-text', 'Close file')
         btn_close.connect('clicked', self.__close_file_callback)
         btn_close.set_sensitive(False)
         self.__btn_close = btn_close
@@ -97,7 +97,7 @@ class ApplicationWindow(Gtk.ApplicationWindow):
         btn_save = Gtk.ToolButton()
         btn_save.set_name('headerbar-btn')
         btn_save.set_icon_name('document-save')
-        btn_save.set_property('tooltip-text', 'Save a file')
+        btn_save.set_property('tooltip-text', 'Save file')
         btn_save.connect('clicked', self.__save_callback)
         btn_save.set_sensitive(False)
         self.__btn_save = btn_save
@@ -152,7 +152,6 @@ class ApplicationWindow(Gtk.ApplicationWindow):
         btn_undo.set_name('headerbar-btn')
         btn_undo.set_icon_name('edit-undo')
         btn_undo.set_property('tooltip-text', 'Undo')
-        #       btn_undo.connect('clicked', self.__undo_callback)
         btn_undo.set_sensitive(False)
         self.__btn_undo = btn_undo
 
@@ -161,7 +160,6 @@ class ApplicationWindow(Gtk.ApplicationWindow):
         btn_redo.set_name('headerbar-btn')
         btn_redo.set_icon_name('edit-redo')
         btn_redo.set_property('tooltip-text', 'Redo')
-        #btn_redo.connect('clicked', self.__editor.redo)
         btn_redo.set_sensitive(False)
         self.__btn_redo = btn_redo
 
@@ -327,7 +325,7 @@ class ApplicationWindow(Gtk.ApplicationWindow):
 
         self.show_all()
 
-    def __open_file_callback(self, btn):
+    def __open_file_callback(self, _):
         """Otvorenie noveho obrazka a jeho nacitanie po overeni zakladnych parametrov."""
 
         if self.__active_image_widget:
@@ -397,25 +395,25 @@ class ApplicationWindow(Gtk.ApplicationWindow):
         self.__zoom_level = ZoomUtil.compute_new_value(self.__zoom_level, zoom)
         self.__change_image_scale()
 
-    def __zoom_in_callback(self, btn):
+    def __zoom_in_callback(self, _):
         """Priblizenie o 10 %."""
 
         self.__zoom_level = ZoomUtil.compute_new_value(self.__zoom_level, 1)
         self.__change_image_scale()
 
-    def __zoom_original_callback(self, btn):
+    def __zoom_original_callback(self, _):
         """Nastavenie priblizenia na 100 %."""
 
         self.__zoom_level = 100
         self.__change_image_scale()
 
-    def __zoom_fit_best_callback(self, btn):
+    def __zoom_fit_best_callback(self, _):
         """Priblizenie, aby bol obrazok viditelny v celkom okne."""
 
         self.__zoom_level = self.__best_zoom_level()
         self.__change_image_scale()
 
-    def __zoom_out_callback(self, btn):
+    def __zoom_out_callback(self, _):
         """Oddialenie priblizenia o 10 %."""
 
         self.__zoom_level = ZoomUtil.compute_new_value(self.__zoom_level, -1)
@@ -455,7 +453,7 @@ class ApplicationWindow(Gtk.ApplicationWindow):
         dialog.run()
         dialog.destroy()
 
-    def __apply_rotate_action(self, btn, x, name):
+    def __apply_rotate_action(self, _, __, name):
         """Aplikovanie operacie no otocenie obrazka, pripadne zrkadlenie."""
 
         self.__editor.apply_filter(name)
