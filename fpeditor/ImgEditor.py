@@ -79,9 +79,9 @@ class ImgEditor:
 
         return img
 
-    def gabor_filter(self):
+    def gabor_filter(self, block_size):
         img = self.__image.current_img()
-        self.do_change(BiometricsLib.gabor_filter(img))
+        self.do_change(BiometricsLib.gabor_filter(img, block_size))
 
         return img
 
