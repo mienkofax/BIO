@@ -30,4 +30,19 @@ class BiometricsLib:
         call(cmd)
         return Image.open(BiometricsLib.TMP_FILE).convert('RGB')
 
+    @staticmethod
+    def skeletonization_filter(img):
+
+        img.save(BiometricsLib.TMP_FILE)
+
+        cmd = [
+            'python2.7',
+            BiometricsLib.__biotrics_lib_path() + 'thining.py',
+            BiometricsLib.TMP_FILE,
+            BiometricsLib.TMP_FILE
+        ]
+
+        call(cmd)
+        return Image.open(BiometricsLib.TMP_FILE).convert('RGB')
+
 

@@ -57,7 +57,6 @@ def make_thin(im):
 
     utils.apply_to_each_pixel(loaded, lambda x: 255.0 * (1 - x))
     utils.load_pixels(im, loaded)
-    im.show()
 
 def reverse(ls):
     cpy = ls[:]
@@ -67,15 +66,13 @@ def reverse(ls):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Image thining")
     parser.add_argument("image", nargs=1, help = "Path to image")
-    parser.add_argument("--save", action='store_true', help = "Save result image as src_image_thinned.gif")
+    parser.add_argument("output", nargs=1, help = "Save result image as src_image_thinned.gif")
     args = parser.parse_args()
 
     im = Image.open(args.image[0])
     im = im.convert("L")  # covert to grayscale
-    im.show()
 
     make_thin(im)
 
-    if args.save:
-        base_image_name = os.path.splitext(os.path.basename(args.image[0]))[0]
-        im.save(base_image_name + "_thinned.gif", "GIF")
+    base_image_name = os.path.splitext(os.path.basename(args.image[0]))[0]
+    im.save(args.output[0])
