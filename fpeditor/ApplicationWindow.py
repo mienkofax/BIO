@@ -237,6 +237,16 @@ class ApplicationWindow(Gtk.ApplicationWindow):
         grayscale.connect('activate', self.__apply_filter_action, 'grayscale')
         self.add_action(grayscale)
 
+        # sub menu for biometrics library
+        model_menu_sub_biometrics = Gio.Menu()
+        model_menu_sub_biometrics.append('Gabor filter', 'win.gabor-filter')
+        model_menu.append_submenu('Biometrics library', model_menu_sub_biometrics)
+
+        # Gabor filter
+        gabor_filter = Gio.SimpleAction.new('gabor-filter', None)
+        gabor_filter.connect('activate', self.__gabor_filter_action)
+        self.add_action(gabor_filter)
+
         # about
         model_menu.append('About', 'win.about')
         about_action = Gio.SimpleAction.new('about', None)
@@ -506,6 +516,9 @@ class ApplicationWindow(Gtk.ApplicationWindow):
         """Aplikovanie filtra so zadanymi parametrami."""
 
         self.__editor.apply_filter(name, params)
+
+    def __gabor_filter_action(self, _, __):
+        self.__editor.gabor_filter()
 
     def __load_logo(self):
         """Nacitanie loga do pixbufferu z adresara, kde sa spusta aplikacia."""

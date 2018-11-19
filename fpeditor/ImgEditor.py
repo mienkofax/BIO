@@ -6,6 +6,7 @@ from fpeditor.RotationUtil import RotationUtil
 from fpeditor.ImgObj import ImgObj
 from fpeditor.DialogUtil import DialogUtil
 from fpeditor.FiltersUtil import FiltersUtil
+from fpeditor.BiometricsLib import BiometricsLib
 
 
 class ImgEditor:
@@ -75,6 +76,12 @@ class ImgEditor:
             raise NameError('unknown filter name: %s' % name)
 
         self.do_change(img)
+
+        return img
+
+    def gabor_filter(self):
+        img = self.__image.current_img()
+        self.do_change(BiometricsLib.gabor_filter(img))
 
         return img
 

@@ -50,12 +50,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Gabor filter applied")
     parser.add_argument("image", nargs=1, help = "Path to image")
     parser.add_argument("block_size", nargs=1, help = "Block size")
-    parser.add_argument("--save", action='store_true', help = "Save result image as src_image_enhanced.gif")
+    parser.add_argument("output", nargs=1, help = "Save result image as src_image_enhanced.gif")
     args = parser.parse_args()
 
     im = Image.open(args.image[0])
     im = im.convert("L")  # covert to grayscale
-    im.show()
 
     W = int(args.block_size[0])
 
@@ -69,8 +68,6 @@ if __name__ == "__main__":
     print "smoothing angles done"
 
     result = gabor(im, W, angles)
-    result.show()
 
-    if args.save:
-        base_image_name = os.path.splitext(os.path.basename(args.image[0]))[0]
-        im.save(base_image_name + "_enhanced.gif", "GIF")
+    base_image_name = os.path.splitext(os.path.basename(args.image[0]))[0]
+    im.save(args.output[0])
