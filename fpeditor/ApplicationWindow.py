@@ -248,7 +248,7 @@ class ApplicationWindow(Gtk.ApplicationWindow):
         # Gabor filter
         gabor_filter = Gio.SimpleAction.new('gabor-filter', None)
         gabor_filter.connect('activate', self.__gabor_filter_action,
-                             ('Block size', 1, 64))
+                             ('Block size', 1, 64, 16))
         self.add_action(gabor_filter)
 
         # thinning (skeletonization)
@@ -549,7 +549,13 @@ class ApplicationWindow(Gtk.ApplicationWindow):
         self.__editor.skeletonization_filter()
 
     def __singular_points_filter_action(self, _, __):
-        self.__editor.singular_points()
+        block_size_dialog = DialogUtil.dialog_with_param(self, 'Block size', 1, 64, 16)
+        block_size_value = block_size_dialog.get_values()
+
+        tolerance_dialog = DialogUtil.dialog_with_param(self, 'Tolerance value', 1, 100, 10)
+        tolerance_value = tolerance_dialog.get_values()
+
+        self.__editor.singular_points(block_size_value, tolerance_value)
 
     def __ridge_filter_action(self, _, __):
         self.__editor.ridge_filter()

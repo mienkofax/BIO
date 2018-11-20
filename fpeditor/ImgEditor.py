@@ -91,9 +91,9 @@ class ImgEditor:
 
         return img
 
-    def singular_points(self):
+    def singular_points(self, block_size, tolerance):
         img = self.__image.current_img()
-        self.do_change(BiometricsLib.singular_points(img))
+        self.do_change(BiometricsLib.singular_points(img, block_size, tolerance))
 
         return img
 
