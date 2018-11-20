@@ -7,6 +7,7 @@ from fpeditor.ImgObj import ImgObj
 from fpeditor.DialogUtil import DialogUtil
 from fpeditor.FiltersUtil import FiltersUtil
 from fpeditor.biometrics.BiometricsLib import BiometricsLib
+from fpeditor.fpie.FingerprintIELib import FingerprintIELib
 
 
 class ImgEditor:
@@ -100,6 +101,12 @@ class ImgEditor:
     def ridge_filter(self):
         img = self.__image.current_img()
         self.do_change(BiometricsLib.ridge_filter(img))
+
+        return img
+
+    def custom_normalize(self):
+        img = self.__image.current_img()
+        self.do_change(FingerprintIELib.normalize(img))
 
         return img
 

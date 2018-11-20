@@ -266,6 +266,16 @@ class ApplicationWindow(Gtk.ApplicationWindow):
         ridge_filter.connect('activate', self.__ridge_filter_action)
         self.add_action(ridge_filter)
 
+        # sub menu for biometrics library
+        model_menu_sub_custom = Gio.Menu()
+        model_menu_sub_custom.append('Normalize', 'win.custom-normalize')
+        model_menu.append_submenu('Custom library', model_menu_sub_custom)
+
+        # normalize
+        custom_normalize = Gio.SimpleAction.new('custom-normalize', None)
+        custom_normalize.connect('activate', self.__custom_normalize_action)
+        self.add_action(custom_normalize)
+
         # about
         model_menu.append('About', 'win.about')
         about_action = Gio.SimpleAction.new('about', None)
@@ -559,6 +569,9 @@ class ApplicationWindow(Gtk.ApplicationWindow):
 
     def __ridge_filter_action(self, _, __):
         self.__editor.ridge_filter()
+
+    def __custom_normalize_action(self, _, __):
+        self.__editor.custom_normalize()
 
     def __load_logo(self):
         """Nacitanie loga do pixbufferu z adresara, kde sa spusta aplikacia."""
