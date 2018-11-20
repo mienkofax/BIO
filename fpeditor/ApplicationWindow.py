@@ -242,6 +242,7 @@ class ApplicationWindow(Gtk.ApplicationWindow):
         model_menu_sub_biometrics.append('Gabor filter', 'win.gabor-filter')
         model_menu_sub_biometrics.append('Thinning (skeletonization)', 'win.skeletonization-filter')
         model_menu_sub_biometrics.append('Singular points on fingerprint', 'win.singular-points')
+        model_menu_sub_biometrics.append('Detect ridge endings and ridge bifurcations', 'win.ridge-filter')
         model_menu.append_submenu('Biometrics library', model_menu_sub_biometrics)
 
         # Gabor filter
@@ -259,6 +260,11 @@ class ApplicationWindow(Gtk.ApplicationWindow):
         singular_points = Gio.SimpleAction.new('singular-points', None)
         singular_points.connect('activate', self.__singular_points_filter_action)
         self.add_action(singular_points)
+
+        # detect ridge endings and ridge bifurcations
+        ridge_filter = Gio.SimpleAction.new('ridge-filter', None)
+        ridge_filter.connect('activate', self.__ridge_filter_action)
+        self.add_action(ridge_filter)
 
         # about
         model_menu.append('About', 'win.about')
@@ -544,6 +550,9 @@ class ApplicationWindow(Gtk.ApplicationWindow):
 
     def __singular_points_filter_action(self, _, __):
         self.__editor.singular_points()
+
+    def __ridge_filter_action(self, _, __):
+        self.__editor.ridge_filter()
 
     def __load_logo(self):
         """Nacitanie loga do pixbufferu z adresara, kde sa spusta aplikacia."""

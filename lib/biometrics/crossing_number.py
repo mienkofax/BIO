@@ -46,17 +46,17 @@ def calculate_minutiaes(im):
 
     return result
 
-parser = argparse.ArgumentParser(description="Minutiae detection using crossing number method")
-parser.add_argument("image", nargs=1, help = "Skeleton image")
-parser.add_argument("--save", action='store_true', help = "Save result image as src_minutiae.gif")
-args = parser.parse_args()
 
-im = Image.open(args.image[0])
-im = im.convert("L")  # covert to grayscale
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Minutiae detection using crossing number method")
+    parser.add_argument("image", nargs=1, help = "Skeleton image")
+    parser.add_argument("output", nargs=1, help = "Save result image as src_minutiae.gif")
+    args = parser.parse_args()
 
-result = calculate_minutiaes(im)
-result.show()
+    im = Image.open(args.image[0])
+    im = im.convert("L")  # covert to grayscale
 
-if args.save:
+    result = calculate_minutiaes(im)
+
     base_image_name = os.path.splitext(os.path.basename(args.image[0]))[0]
-    result.save(base_image_name + "_minutiae.gif", "GIF")
+    result.save(args.output[0])

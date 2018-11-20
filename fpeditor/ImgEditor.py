@@ -97,6 +97,12 @@ class ImgEditor:
 
         return img
 
+    def ridge_filter(self):
+        img = self.__image.current_img()
+        self.do_change(BiometricsLib.ridge_filter(img))
+
+        return img
+
     def do_change(self, img):
         """Vykonanie aktualizacie obrazku po nejakej zmene."""
 
