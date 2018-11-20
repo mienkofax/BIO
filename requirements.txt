@@ -1,3 +1,6 @@
 PyGObject
 pgi
 dbus-python
+matplotlib
+scipy
+scikit-image
