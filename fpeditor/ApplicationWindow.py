@@ -237,6 +237,106 @@ class ApplicationWindow(Gtk.ApplicationWindow):
         grayscale.connect('activate', self.__apply_filter_action, 'grayscale')
         self.add_action(grayscale)
 
+        # sub menu for biometrics library
+        model_menu_sub_biometrics = Gio.Menu()
+        model_menu_sub_biometrics.append('Gabor filter', 'win.gabor-filter')
+        model_menu_sub_biometrics.append('Thinning (skeletonization)', 'win.skeletonization-filter')
+        model_menu_sub_biometrics.append('Singular points on fingerprint', 'win.singular-points')
+        model_menu_sub_biometrics.append('Detect ridge endings and ridge bifurcations', 'win.ridge-filter')
+        model_menu.append_submenu('Biometrics library', model_menu_sub_biometrics)
+
+        # Gabor filter
+        gabor_filter = Gio.SimpleAction.new('gabor-filter', None)
+        gabor_filter.connect('activate', self.__gabor_filter_action,
+                             ('Block size', 1, 64, 16))
+        self.add_action(gabor_filter)
+
+        # thinning (skeletonization)
+        skeletonization_filter = Gio.SimpleAction.new('skeletonization-filter', None)
+        skeletonization_filter.connect('activate', self.__skeletonization_filter_action)
+        self.add_action(skeletonization_filter)
+
+        # singular points on fingerprint
+        singular_points = Gio.SimpleAction.new('singular-points', None)
+        singular_points.connect('activate', self.__singular_points_filter_action)
+        self.add_action(singular_points)
+
+        # detect ridge endings and ridge bifurcations
+        ridge_filter = Gio.SimpleAction.new('ridge-filter', None)
+        ridge_filter.connect('activate', self.__ridge_filter_action)
+        self.add_action(ridge_filter)
+
+        # sub menu for biometrics library
+        model_menu_sub_custom = Gio.Menu()
+        model_menu_sub_custom.append('Normalize', 'win.custom-normalize')
+        model_menu_sub_custom.append('Finding mask', 'win.custom-find-mask')
+        model_menu_sub_custom.append('Estimating orientations', 'win.custom-orientation')
+        model_menu_sub_custom.append('Filtering (Gabor) with subdivide',
+                                     'win.custom-filtering')
+        model_menu_sub_custom.append('Filtering (Gabor) without subdivide',
+                                     'win.custom-filtering-sub')
+        model_menu_sub_custom.append('Filtering (Wahab)',
+                                     'win.custom-filtering-wahab')
+        model_menu_sub_custom.append('Binarizing (Gabor) with subdivide',
+                                     'win.custom-binarizing-with-subdivide')
+        model_menu_sub_custom.append('Binarizing (Gabor) without subdivide',
+                                     'win.custom-binarizing-without-subdivide')
+        model_menu_sub_custom.append('Binarizing (Wahab)',
+                                     'win.custom-binarizing-wahab')
+        model_menu.append_submenu('Custom library', model_menu_sub_custom)
+
+        # normalize
+        custom_normalize = Gio.SimpleAction.new('custom-normalize', None)
+        custom_normalize.connect('activate', self.__custom_normalize_action)
+        self.add_action(custom_normalize)
+
+        # find mask
+        custom_find_mask = Gio.SimpleAction.new('custom-find-mask', None)
+        custom_find_mask.connect('activate', self.__custom_find_mask_action)
+        self.add_action(custom_find_mask)
+
+        # orientation
+        custom_orientation = Gio.SimpleAction.new('custom-orientation', None)
+        custom_orientation.connect('activate', self.__custom_orientation_action)
+        self.add_action(custom_orientation)
+
+        # filtering with subdivide
+        custom_filtering_with_divide = Gio.SimpleAction.new('custom-filtering')
+        custom_filtering_with_divide.connect('activate', self.__custom_filtering_action,
+                                             'gabor', True)
+        self.add_action(custom_filtering_with_divide)
+
+        # filtering without subdivide
+        custom_filtering_without_divide = Gio.SimpleAction.new('custom-filtering-sub', None)
+        custom_filtering_without_divide.connect('activate', self.__custom_filtering_action,
+                                                'gabor', False)
+        self.add_action(custom_filtering_without_divide)
+
+        # filtering wahab
+        custom_filtering_wahab = Gio.SimpleAction.new('custom-filtering-wahab', None)
+        custom_filtering_wahab.connect('activate', self.__custom_filtering_action,
+                                       'wahab', False)
+        self.add_action(custom_filtering_wahab)
+
+        # binarizing with subdivide
+        custom_binarizing_with_subdivide = Gio.SimpleAction.new(
+            'custom-binarizing-with-subdivide', None)
+        custom_binarizing_with_subdivide.connect('activate', self.__binarizing_action,
+                                                 'gabor', True)
+        self.add_action(custom_binarizing_with_subdivide)
+
+        # binarizing without subdivide
+        custom_binarizing_without_subdivide = Gio.SimpleAction.new(
+            'custom-binarizing-without-subdivide', None)
+        custom_binarizing_without_subdivide.connect('activate', self.__binarizing_action,
+                                                    'gabor', False)
+        self.add_action(custom_binarizing_without_subdivide)
+
+        # binarizing wahab
+        custom_binarizing_wahab = Gio.SimpleAction.new('custom-binarizing-wahab', None)
+        custom_binarizing_wahab.connect('activate', self.__binarizing_action, 'wahab', None)
+        self.add_action(custom_binarizing_wahab)
+
         # about
         model_menu.append('About', 'win.about')
         about_action = Gio.SimpleAction.new('about', None)
@@ -506,6 +606,45 @@ class ApplicationWindow(Gtk.ApplicationWindow):
         """Aplikovanie filtra so zadanymi parametrami."""
 
         self.__editor.apply_filter(name, params)
+
+    def __gabor_filter_action(self, _, __, params=None):
+        dialog = DialogUtil.dialog_with_param(self, *params)
+        values = dialog.get_values()
+
+        if values is None:
+            self.__editor.gabor_filter()
+        else:
+            self.__editor.gabor_filter(values)
+
+    def __skeletonization_filter_action(self, _, __):
+        self.__editor.skeletonization_filter()
+
+    def __singular_points_filter_action(self, _, __):
+        block_size_dialog = DialogUtil.dialog_with_param(self, 'Block size', 1, 64, 16)
+        block_size_value = block_size_dialog.get_values()
+
+        tolerance_dialog = DialogUtil.dialog_with_param(self, 'Tolerance value', 1, 100, 10)
+        tolerance_value = tolerance_dialog.get_values()
+
+        self.__editor.singular_points(block_size_value, tolerance_value)
+
+    def __ridge_filter_action(self, _, __):
+        self.__editor.ridge_filter()
+
+    def __custom_normalize_action(self, _, __):
+        self.__editor.custom_normalize()
+
+    def __custom_find_mask_action(self, _, __):
+        self.__editor.find_mask()
+
+    def __custom_orientation_action(self, _, __):
+        self.__editor.orientation()
+
+    def __custom_filtering_action(self, _, __, filter_type, enable_subdivide):
+        self.__editor.fitlering(filter_type, enable_subdivide)
+
+    def __binarizing_action(self, _, __, filter_type, enable_subdivide):
+        self.__editor.binarization(filter_type, enable_subdivide)
 
     def __load_logo(self):
         """Nacitanie loga do pixbufferu z adresara, kde sa spusta aplikacia."""

@@ -6,6 +6,8 @@ from fpeditor.RotationUtil import RotationUtil
 from fpeditor.ImgObj import ImgObj
 from fpeditor.DialogUtil import DialogUtil
 from fpeditor.FiltersUtil import FiltersUtil
+from fpeditor.biometrics.BiometricsLib import BiometricsLib
+from fpeditor.fpie.FingerprintIELib import FingerprintIELib
 
 
 class ImgEditor:
@@ -75,6 +77,60 @@ class ImgEditor:
             raise NameError('unknown filter name: %s' % name)
 
         self.do_change(img)
+
+        return img
+
+    def gabor_filter(self, block_size):
+        img = self.__image.current_img()
+        self.do_change(BiometricsLib.gabor_filter(img, block_size))
+
+        return img
+
+    def skeletonization_filter(self):
+        img = self.__image.current_img()
+        self.do_change(BiometricsLib.skeletonization_filter(img))
+
+        return img
+
+    def singular_points(self, block_size, tolerance):
+        img = self.__image.current_img()
+        self.do_change(BiometricsLib.singular_points(img, block_size, tolerance))
+
+        return img
+
+    def ridge_filter(self):
+        img = self.__image.current_img()
+        self.do_change(BiometricsLib.ridge_filter(img))
+
+        return img
+
+    def custom_normalize(self):
+        img = self.__image.current_img()
+        self.do_change(FingerprintIELib.normalize(img))
+
+        return img
+
+    def find_mask(self):
+        img = self.__image.current_img()
+        self.do_change(FingerprintIELib.find_mask(img))
+
+        return img
+
+    def orientation(self):
+        img = self.__image.current_img()
+        self.do_change(FingerprintIELib.orientations(img))
+
+        return img
+
+    def fitlering(self, filter_type, enable_subdivide):
+        img = self.__image.current_img()
+        self.do_change(FingerprintIELib.filtering(img, filter_type, enable_subdivide))
+
+        return img
+
+    def binarization(self, filter_type, enable_subdivide):
+        img = self.__image.current_img()
+        self.do_change(FingerprintIELib.binarizing(img, filter_type, enable_subdivide))
 
         return img
 

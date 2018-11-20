@@ -21,6 +21,9 @@ class PixBufUtil:
     def pil_to_pixbuf(img):
         """Vytvorenie pix buffera zo zadaneho obrazka."""
 
+        if img.mode == 'L':
+            img = img.convert('RGB')
+
         data = GLib.Bytes.new(img.tobytes())
         w, h = img.size
 
