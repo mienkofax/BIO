@@ -96,15 +96,18 @@ class DialogUtil:
         return filename
 
     @staticmethod
-    def dialog_with_param(parent, title, limit_min, limit_max):
+    def dialog_with_param(parent, title, limit_min, limit_max, default_value=None):
         def on_apply_clicked(_, scale, dialog):
             dialog.values.append(int(scale.get_value()))
             dialog.destroy()
 
         dialog = CustomDialog(parent, title)
 
+        if default_value is None:
+            default_value = (limit_min + limit_max) / 2
+
         scale = Gtk.Scale.new_with_range(Gtk.Orientation.HORIZONTAL, limit_min, limit_max, 20)
-        scale.set_value((limit_min + limit_max) / 2)
+        scale.set_value(default_value)
         scale.set_hexpand(True)
         scale.set_valign(Gtk.Align.START)
 
