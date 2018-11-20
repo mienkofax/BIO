@@ -271,6 +271,12 @@ class ApplicationWindow(Gtk.ApplicationWindow):
         model_menu_sub_custom.append('Normalize', 'win.custom-normalize')
         model_menu_sub_custom.append('Finding mask', 'win.custom-find-mask')
         model_menu_sub_custom.append('Estimating orientations', 'win.custom-orientation')
+        model_menu_sub_custom.append('Filtering (Gabor) with subdivide',
+                                     'win.custom-filtering')
+        model_menu_sub_custom.append('Filtering (Gabor) without subdivide',
+                                     'win.custom-filtering-sub')
+        model_menu_sub_custom.append('Filtering (Wahab)',
+                                     'win.custom-filtering-wahab')
         model_menu.append_submenu('Custom library', model_menu_sub_custom)
 
         # normalize
@@ -287,6 +293,24 @@ class ApplicationWindow(Gtk.ApplicationWindow):
         custom_orientation = Gio.SimpleAction.new('custom-orientation', None)
         custom_orientation.connect('activate', self.__custom_orientation_action)
         self.add_action(custom_orientation)
+
+        # filtering with subdivide
+        custom_filtering_with_divide = Gio.SimpleAction.new('custom-filtering')
+        custom_filtering_with_divide.connect('activate', self.__custom_filtering_action,
+                                             'gabor', True)
+        self.add_action(custom_filtering_with_divide)
+
+        # filtering without subdivide
+        custom_filtering_without_divide = Gio.SimpleAction.new('custom-filtering-sub', None)
+        custom_filtering_without_divide.connect('activate', self.__custom_filtering_action,
+                                                'gabor', False)
+        self.add_action(custom_filtering_without_divide)
+
+        # filtering wahab
+        custom_filtering_wahab = Gio.SimpleAction.new('custom-filtering-wahab', None)
+        custom_filtering_wahab.connect('activate', self.__custom_filtering_action,
+                                       'wahab', False)
+        self.add_action(custom_filtering_wahab)
 
         # about
         model_menu.append('About', 'win.about')
@@ -590,6 +614,9 @@ class ApplicationWindow(Gtk.ApplicationWindow):
 
     def __custom_orientation_action(self, _, __):
         self.__editor.orientation()
+
+    def __custom_filtering_action(self, _, __, filter_type, enable_subdivide):
+        self.__editor.fitlering(filter_type, enable_subdivide)
 
     def __load_logo(self):
         """Nacitanie loga do pixbufferu z adresara, kde sa spusta aplikacia."""

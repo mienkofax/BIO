@@ -122,6 +122,12 @@ class ImgEditor:
 
         return img
 
+    def fitlering(self, filter_type, enable_subdivide):
+        img = self.__image.current_img()
+        self.do_change(FingerprintIELib.filtering(img, filter_type, enable_subdivide))
+
+        return img
+
     def do_change(self, img):
         """Vykonanie aktualizacie obrazku po nejakej zmene."""
 
