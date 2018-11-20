@@ -191,9 +191,9 @@ class ApplicationWindow(Gtk.ApplicationWindow):
         model_menu_sub_operations = Gio.Menu()
         model_menu_sub_operations.append('Rotate -90°', 'win.rotate-left')
         model_menu_sub_operations.append('Rotate +90°', 'win.rotate-right')
-        model_menu_sub_operations.append('Horizontal mirror', 'win.horizontal-mirror')
-        model_menu_sub_operations.append('Vertical mirror', 'win.vertical-mirror')
-        model_menu.append_submenu('Rotate image', model_menu_sub_operations)
+        model_menu_sub_operations.append('Flip Vertically', 'win.horizontal-mirror')
+        model_menu_sub_operations.append('Flip Horizontally', 'win.vertical-mirror')
+        model_menu.append_submenu('Transform image', model_menu_sub_operations)
 
         # rotate -90
         rotate_left_action = Gio.SimpleAction.new('rotate-left', None)
