@@ -116,6 +116,12 @@ class ImgEditor:
 
         return img
 
+    def orientation(self):
+        img = self.__image.current_img()
+        self.do_change(FingerprintIELib.orientations(img))
+
+        return img
+
     def do_change(self, img):
         """Vykonanie aktualizacie obrazku po nejakej zmene."""
 

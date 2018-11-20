@@ -270,6 +270,7 @@ class ApplicationWindow(Gtk.ApplicationWindow):
         model_menu_sub_custom = Gio.Menu()
         model_menu_sub_custom.append('Normalize', 'win.custom-normalize')
         model_menu_sub_custom.append('Finding mask', 'win.custom-find-mask')
+        model_menu_sub_custom.append('Estimating orientations', 'win.custom-orientation')
         model_menu.append_submenu('Custom library', model_menu_sub_custom)
 
         # normalize
@@ -281,6 +282,11 @@ class ApplicationWindow(Gtk.ApplicationWindow):
         custom_find_mask = Gio.SimpleAction.new('custom-find-mask', None)
         custom_find_mask.connect('activate', self.__custom_find_mask_action)
         self.add_action(custom_find_mask)
+
+        # orientation
+        custom_orientation = Gio.SimpleAction.new('custom-orientation', None)
+        custom_orientation.connect('activate', self.__custom_orientation_action)
+        self.add_action(custom_orientation)
 
         # about
         model_menu.append('About', 'win.about')
@@ -581,6 +587,9 @@ class ApplicationWindow(Gtk.ApplicationWindow):
 
     def __custom_find_mask_action(self, _, __):
         self.__editor.find_mask()
+
+    def __custom_orientation_action(self, _, __):
+        self.__editor.orientation()
 
     def __load_logo(self):
         """Nacitanie loga do pixbufferu z adresara, kde sa spusta aplikacia."""
