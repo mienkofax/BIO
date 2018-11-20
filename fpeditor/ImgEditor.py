@@ -128,6 +128,12 @@ class ImgEditor:
 
         return img
 
+    def binarization(self, filter_type, enable_subdivide):
+        img = self.__image.current_img()
+        self.do_change(FingerprintIELib.binarizing(img, filter_type, enable_subdivide))
+
+        return img
+
     def do_change(self, img):
         """Vykonanie aktualizacie obrazku po nejakej zmene."""
 

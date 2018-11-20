@@ -277,6 +277,12 @@ class ApplicationWindow(Gtk.ApplicationWindow):
                                      'win.custom-filtering-sub')
         model_menu_sub_custom.append('Filtering (Wahab)',
                                      'win.custom-filtering-wahab')
+        model_menu_sub_custom.append('Binarizing (Gabor) with subdivide',
+                                     'win.custom-binarizing-with-subdivide')
+        model_menu_sub_custom.append('Binarizing (Gabor) without subdivide',
+                                     'win.custom-binarizing-without-subdivide')
+        model_menu_sub_custom.append('Binarizing (Wahab)',
+                                     'win.custom-binarizing-wahab')
         model_menu.append_submenu('Custom library', model_menu_sub_custom)
 
         # normalize
@@ -311,6 +317,25 @@ class ApplicationWindow(Gtk.ApplicationWindow):
         custom_filtering_wahab.connect('activate', self.__custom_filtering_action,
                                        'wahab', False)
         self.add_action(custom_filtering_wahab)
+
+        # binarizing with subdivide
+        custom_binarizing_with_subdivide = Gio.SimpleAction.new(
+            'custom-binarizing-with-subdivide', None)
+        custom_binarizing_with_subdivide.connect('activate', self.__binarizing_action,
+                                                 'gabor', True)
+        self.add_action(custom_binarizing_with_subdivide)
+
+        # binarizing without subdivide
+        custom_binarizing_without_subdivide = Gio.SimpleAction.new(
+            'custom-binarizing-without-subdivide', None)
+        custom_binarizing_without_subdivide.connect('activate', self.__binarizing_action,
+                                                    'gabor', False)
+        self.add_action(custom_binarizing_without_subdivide)
+
+        # binarizing wahab
+        custom_binarizing_wahab = Gio.SimpleAction.new('custom-binarizing-wahab', None)
+        custom_binarizing_wahab.connect('activate', self.__binarizing_action, 'wahab', None)
+        self.add_action(custom_binarizing_wahab)
 
         # about
         model_menu.append('About', 'win.about')
@@ -617,6 +642,9 @@ class ApplicationWindow(Gtk.ApplicationWindow):
 
     def __custom_filtering_action(self, _, __, filter_type, enable_subdivide):
         self.__editor.fitlering(filter_type, enable_subdivide)
+
+    def __binarizing_action(self, _, __, filter_type, enable_subdivide):
+        self.__editor.binarization(filter_type, enable_subdivide)
 
     def __load_logo(self):
         """Nacitanie loga do pixbufferu z adresara, kde sa spusta aplikacia."""
