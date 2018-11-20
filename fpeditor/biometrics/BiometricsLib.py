@@ -9,7 +9,7 @@ class BiometricsLib:
 
     @staticmethod
     def __biotrics_lib_path():
-        bpath = path.dirname(path.dirname(path.abspath(__file__)))
+        bpath = path.dirname(path.dirname(path.dirname(path.abspath(__file__))))
         bpath += '/' + BiometricsLib.LIBRARY_PATH + '/'
 
         return bpath
