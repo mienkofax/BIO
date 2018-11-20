@@ -51,29 +51,28 @@ def calculate_singularities(im, angles, tolerance, W):
 
     return result
 
-parser = argparse.ArgumentParser(description="Singularities with Poincare index")
-parser.add_argument("image", nargs=1, help = "Path to image")
-parser.add_argument("block_size", nargs=1, help = "Block size")
-parser.add_argument("tolerance", nargs=1, help = "Tolerance for Poincare index")
-parser.add_argument('--smooth', "-s", action='store_true', help = "Use Gauss for smoothing")
-parser.add_argument("--save", action='store_true', help = "Save result image as src_poincare.gif")
-args = parser.parse_args()
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Singularities with Poincare index")
+    parser.add_argument("image", nargs=1, help = "Path to image")
+    parser.add_argument("block_size", nargs=1, help = "Block size")
+    parser.add_argument("tolerance", nargs=1, help = "Tolerance for Poincare index")
+    parser.add_argument("output", nargs=1, help = "Save result image as src_poincare.gif")
+    parser.add_argument('--smooth', "-s", action='store_true', help = "Use Gauss for smoothing")
+    args = parser.parse_args()
 
-im = Image.open(args.image[0])
-im = im.convert("L")  # covert to grayscale
+    im = Image.open(args.image[0])
+    im = im.convert("L")  # covert to grayscale
 
-W = int(args.block_size[0])
+    W = int(args.block_size[0])
 
-f = lambda x, y: 2 * x * y
-g = lambda x, y: x ** 2 - y ** 2
+    f = lambda x, y: 2 * x * y
+    g = lambda x, y: x ** 2 - y ** 2
 
-angles = utils.calculate_angles(im, W, f, g)
-if args.smooth:
-    angles = utils.smooth_angles(angles)
+    angles = utils.calculate_angles(im, W, f, g)
+    if args.smooth:
+        angles = utils.smooth_angles(angles)
 
-result = calculate_singularities(im, angles, int(args.tolerance[0]), W)
-result.show()
+    result = calculate_singularities(im, angles, int(args.tolerance[0]), W)
 
-if args.save:
     base_image_name = os.path.splitext(os.path.basename(args.image[0]))[0]
-    result.save(base_image_name + "_poincare.gif", "GIF")
+    result.save(args.output[0])

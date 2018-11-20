@@ -241,6 +241,7 @@ class ApplicationWindow(Gtk.ApplicationWindow):
         model_menu_sub_biometrics = Gio.Menu()
         model_menu_sub_biometrics.append('Gabor filter', 'win.gabor-filter')
         model_menu_sub_biometrics.append('Thinning (skeletonization)', 'win.skeletonization-filter')
+        model_menu_sub_biometrics.append('Singular points on fingerprint', 'win.singular-points')
         model_menu.append_submenu('Biometrics library', model_menu_sub_biometrics)
 
         # Gabor filter
@@ -253,6 +254,11 @@ class ApplicationWindow(Gtk.ApplicationWindow):
         skeletonization_filter = Gio.SimpleAction.new('skeletonization-filter', None)
         skeletonization_filter.connect('activate', self.__skeletonization_filter_action)
         self.add_action(skeletonization_filter)
+
+        # singular points on fingerprint
+        singular_points = Gio.SimpleAction.new('singular-points', None)
+        singular_points.connect('activate', self.__singular_points_filter_action)
+        self.add_action(singular_points)
 
         # about
         model_menu.append('About', 'win.about')
@@ -535,6 +541,9 @@ class ApplicationWindow(Gtk.ApplicationWindow):
 
     def __skeletonization_filter_action(self, _, __):
         self.__editor.skeletonization_filter()
+
+    def __singular_points_filter_action(self, _, __):
+        self.__editor.singular_points()
 
     def __load_logo(self):
         """Nacitanie loga do pixbufferu z adresara, kde sa spusta aplikacia."""

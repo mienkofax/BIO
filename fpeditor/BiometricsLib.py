@@ -45,4 +45,26 @@ class BiometricsLib:
         call(cmd)
         return Image.open(BiometricsLib.TMP_FILE).convert('RGB')
 
+    @staticmethod
+    def singular_points(img, block_size=16, tolerance=1, enable_smooth=True):
+
+        img.save(BiometricsLib.TMP_FILE)
+
+        smooth = ''
+        if enable_smooth:
+            smooth = '--smooth'
+
+        cmd = [
+            'python2.7',
+            BiometricsLib.__biotrics_lib_path() + 'poincare.py',
+            BiometricsLib.TMP_FILE,
+            str(block_size),
+            str(tolerance),
+            str(smooth),
+            BiometricsLib.TMP_FILE
+        ]
+
+        call(cmd)
+        return Image.open(BiometricsLib.TMP_FILE).convert('RGB')
+
 

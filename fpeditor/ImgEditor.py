@@ -91,6 +91,12 @@ class ImgEditor:
 
         return img
 
+    def singular_points(self):
+        img = self.__image.current_img()
+        self.do_change(BiometricsLib.singular_points(img))
+
+        return img
+
     def do_change(self, img):
         """Vykonanie aktualizacie obrazku po nejakej zmene."""
 
