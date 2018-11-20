@@ -18,3 +18,14 @@ class FingerprintIELib:
 
         misc.imsave(FingerprintIELib.FILE, image)
         return Image.open(FingerprintIELib.FILE)
+
+    @staticmethod
+    def find_mask(img):
+        img.save(FingerprintIELib.FILE)
+
+        image = ndimage.imread(FingerprintIELib.FILE, mode="L").astype("float64")
+        image = Utils.normalize(image)
+        mask = Utils.find_mask(image)
+
+        misc.imsave(FingerprintIELib.FILE, mask)
+        return Image.open(FingerprintIELib.FILE)

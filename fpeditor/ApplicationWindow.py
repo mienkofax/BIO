@@ -269,12 +269,18 @@ class ApplicationWindow(Gtk.ApplicationWindow):
         # sub menu for biometrics library
         model_menu_sub_custom = Gio.Menu()
         model_menu_sub_custom.append('Normalize', 'win.custom-normalize')
+        model_menu_sub_custom.append('Finding mask', 'win.custom-find-mask')
         model_menu.append_submenu('Custom library', model_menu_sub_custom)
 
         # normalize
         custom_normalize = Gio.SimpleAction.new('custom-normalize', None)
         custom_normalize.connect('activate', self.__custom_normalize_action)
         self.add_action(custom_normalize)
+
+        # find mask
+        custom_find_mask = Gio.SimpleAction.new('custom-find-mask', None)
+        custom_find_mask.connect('activate', self.__custom_find_mask_action)
+        self.add_action(custom_find_mask)
 
         # about
         model_menu.append('About', 'win.about')
@@ -572,6 +578,9 @@ class ApplicationWindow(Gtk.ApplicationWindow):
 
     def __custom_normalize_action(self, _, __):
         self.__editor.custom_normalize()
+
+    def __custom_find_mask_action(self, _, __):
+        self.__editor.find_mask()
 
     def __load_logo(self):
         """Nacitanie loga do pixbufferu z adresara, kde sa spusta aplikacia."""

@@ -110,6 +110,12 @@ class ImgEditor:
 
         return img
 
+    def find_mask(self):
+        img = self.__image.current_img()
+        self.do_change(FingerprintIELib.find_mask(img))
+
+        return img
+
     def do_change(self, img):
         """Vykonanie aktualizacie obrazku po nejakej zmene."""
 
