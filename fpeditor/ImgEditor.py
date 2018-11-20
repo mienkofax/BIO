@@ -6,7 +6,7 @@ from fpeditor.RotationUtil import RotationUtil
 from fpeditor.ImgObj import ImgObj
 from fpeditor.DialogUtil import DialogUtil
 from fpeditor.FiltersUtil import FiltersUtil
-from fpeditor.BiometricsLib import BiometricsLib
+from fpeditor.biometrics.BiometricsLib import BiometricsLib
 
 
 class ImgEditor:
