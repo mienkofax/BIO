@@ -1,5 +1,11 @@
 # BIO
 
+## Authors
+
+ * Peter Tisovčík
+ * Klára Nečasová
+ * Vašek Ševčík
+
 ## Libraries
 
 ### wsq
