@@ -2,9 +2,9 @@
 
 ## Authors
 
- * Peter Tisovčík
- * Klára Nečasová
- * Vašek Ševčík
+ * [Peter Tisovčík](https://github.com/mienkofax)
+ * [Klára Nečasová](https://github.com/Klarksonnek)
+ * [Vašek Ševčík](https://github.com/VaclavSevcik)
 
 ## Libraries
 
